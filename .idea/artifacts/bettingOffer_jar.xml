@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="bettingOffer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/bettingOffer_jar</output-path>
+    <root id="archive" name="bettingOffer.jar">
+      <element id="module-output" name="bettingOffer" />
+    </root>
+  </artifact>
+</component>
