@@ -1,0 +1,29 @@
+@startuml
+skinparam classFontColor red
+actor User #Green
+User-> System: User send request
+System -> System++: parse url and params
+== GET SESSION KEY ==
+User -> System: The URL is Request for generate sessionKey(: GET /<customerid>/session)
+autonumber 1
+System-> System ++ : add synchronized lock
+group Check Session Key and Generate Session Key
+    System-> System: check sessionKey is existed and is not expired
+    System-[#red]> User: Return 200 OK and sessionKey to client
+    System-> System: sessionKey is not existed or expired,\n call generateSessionKey() create new sessionKey and save it to loginMap
+    System-[#red]> User: Return 200 OK and new sessionKey to client
+end
+== POST A CUSTOMER’S STAKE ON A BETTING OFFER ==
+autonumber 1
+User -> System: The URL is request for (POST /<betofferid>/stake?sessionkey=<sessionkey>)
+System -> System: get the request param sessionKey and get session message form loginMap
+System -> System: If session is expired, remove form loginMap
+ System -[#red]> User: Session not found or expired, return 401 Unauthorized
+System -> System: Session existed and not expired,  reset lastValidTime.\n Use stakeMap.compute save or update stake.\n if has history stake for current user \n current stakeAmount > history stakeAmount, update stake.\n  if not existed stakeAmount save it. \n get all stake for the offerId and sorted it keep only top 20;
+System -[#red]> User: Return 200 OK
+== GET A HIGH STAKES LIST FOR A BETTING OFFER ==
+autonumber 1
+User -> System: The URL is request for (GET /<betofferid>/highstakes)
+System -> System: get high stakes list for the offerId from stakeMap,if empty will return empty String
+System-> User: Return high stakes String to client
+@enduml

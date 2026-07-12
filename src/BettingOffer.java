@@ -51,6 +51,9 @@ public class BettingOffer {
         }
     }
 
+
+
+
     private static void dealWithRequest(HttpExchange exchange, String requestMethodType, String path) throws IOException{
         //get sessionKey
         if (requestMethodType.equalsIgnoreCase("GET") && path.endsWith("/session")) {
