@@ -154,14 +154,6 @@ public class BettingOffer {
         System.out.println("Stake submitted for offerId: " + offerId + " by user: " + userInfo.getCustomerId());
         return 200;
     }
-
-    private static String getTopStakes(int offerId) {
-        return stakeMap.getOrDefault(offerId, new ArrayList<>())
-                .stream()
-                .map(stake -> stake.getUserInfo().getCustomerId() + "=" + stake.getStakeAmount())
-                .collect(Collectors.joining(","));
-    }
-
     private static void saveStake(int offerId, int stakeAmount, UserInfo userInfo) {
 
         List<Stake> newStakes = stakeMap.compute(offerId, (key, stakes) -> {
@@ -181,7 +173,7 @@ public class BettingOffer {
                 stakes.add(new Stake(stakeAmount, LocalDateTime.now(), userInfo));
             }
 
-            // Sort and limit to top 20 for current offer, base on amount and then time
+            // Sort and limit to top 20 for current offerId, base on amount and then time
             stakes.sort((s1, s2) -> {
                 if (s2.getStakeAmount() != s1.getStakeAmount()) {
                     return Integer.compare(s2.getStakeAmount(), s1.getStakeAmount());
@@ -196,6 +188,15 @@ public class BettingOffer {
         });
         stakeMap.put(offerId, newStakes);
     }
+
+    private static String getTopStakes(int offerId) {
+        return stakeMap.getOrDefault(offerId, new ArrayList<>())
+                .stream()
+                .map(stake -> stake.getUserInfo().getCustomerId() + "=" + stake.getStakeAmount())
+                .collect(Collectors.joining(","));
+    }
+
+
 
     private static String generateSessionKey() {
         StringBuilder str = new StringBuilder();
@@ -222,6 +223,7 @@ public class BettingOffer {
 
     public static Executor executorThreadPoolExecutor() {
         int cpus = Runtime.getRuntime().availableProcessors();
+        System.out.println("cpu num: " + cpus);
         return new ThreadPoolExecutor(cpus+1, cpus+1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(BLOCK_QUEUE), new ThreadPoolExecutor.AbortPolicy());
     }
 
