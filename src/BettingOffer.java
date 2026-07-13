@@ -14,7 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
@@ -24,10 +26,10 @@ public class BettingOffer {
     private static final int TCP_CONNECTIONS = 100;
     private static final int BLOCK_QUEUE = 1000;
     private static final int TOP_STAKES_LIMIT = 20;
-    private static final ConcurrentHashMap<String, UserInfo> loginMap = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<Integer, List<Stake>> stakeMap = new ConcurrentHashMap<>();
+    private static final Map<String, UserInfo> loginMap = new HashMap<>(2<<5);
+    private static final ConcurrentHashMap<Integer, List<Stake>> stakeMap = new ConcurrentHashMap<>(2<<5);
     private static final SecureRandom random = new SecureRandom();
-    private static final String SESSION_DIC = "0123456789ABCDEFGHLMNOBQRSTUWWXYZ";
+    private static final String SESSION_DIC = "0123456789ABCDEFGHILMNOBQRSTUWWXYZ";
     private static final Object SESSION_LOCK = new Object();
     private static final String TIPS = "Please check your url and try again.";
 
