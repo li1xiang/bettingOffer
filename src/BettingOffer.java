@@ -73,6 +73,11 @@ public class BettingOffer {
 
             String offerId = path.split("/")[1];
             System.out.println("Offer ID: " + offerId);
+            if (!offerId.matches("\\d+")) {
+                exchange.sendResponseHeaders(400, 0);
+                exchange.close();
+                return;
+            }
 
             String sessionKey = exchange.getRequestURI().getQuery().split("=")[1];
             System.out.println("Query: " + sessionKey);
@@ -90,6 +95,11 @@ public class BettingOffer {
         //get top 20 stakes for offerId
         else if (requestMethodType.equalsIgnoreCase("GET") && path.endsWith("/highstakes")) {
             String offerId = path.split("/")[1];
+            if (!offerId.matches("\\d+")) {
+                exchange.sendResponseHeaders(400, 0);
+                exchange.close();
+                return;
+            }
             String topStakes = getTopStakes(Integer.parseInt(offerId));
             byte[] topStakesBytes = topStakes.getBytes();
             setResponse(exchange, topStakesBytes.length, 200);
