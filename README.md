@@ -6,7 +6,7 @@
 2. Get user session from loginMap, and check the session is expired, if not expired then return session and reset login time.
 3. if not exist session we create a new session and store it in loginMap.
 4. Why I choose SecureRandom? Because I used to use it in my previous project, and it is secure and true random number generate.
-# ABOUT POST /<betofferid>/stake?sessionkey=<sessionkey>
+# About POST /<betofferid>/stake?sessionkey=<sessionkey>
 1. Get userInfo from HashMap(loginMap),  and check userInfo is existed and the session is expired and remove it.
 2. Why I choose ConcurrentHashMap?
     2.1 Because high-concurrent request, so I choose ConcurrentHashMap to store stakes for betting offer and avoid concurrent problem.
